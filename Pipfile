@@ -31,6 +31,8 @@ psutil = "*"
 ipython = "*"
 sentry-sdk = "*"
 django-dotenv = "*"
+djangorestframework = "*"
+django-rest-knox = "*"
 
 [requires]
 python_version = "3.7"
