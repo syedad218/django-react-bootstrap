@@ -19,6 +19,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
     path(r'api/', include('rest_framework.urls', namespace='rest_framework')),
+    path(r'', TemplateView.as_view(template_name='exampleapp/itworks.html'), name='home'),
     path(r'', include(router.urls))
-    # url(r'^$', TemplateView.as_view(template_name='exampleapp/itworks.html'), name='home'),
 ]

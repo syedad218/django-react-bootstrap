@@ -3,10 +3,14 @@ import { hot } from 'react-hot-loader';
 
 import Home from './pages/Home';
 import SentryBoundary from './utils/SentryBoundary';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = () => (
   <SentryBoundary>
-    <Home />
+    <Provider store={store}>
+      <Home />
+    </Provider>
   </SentryBoundary>
 );
 
