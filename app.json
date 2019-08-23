@@ -50,6 +50,12 @@
         "version": "3.2"
       },
       "as": "REDIS"
+    },
+    {
+      "plan": "sendgrid:starter"
+    },
+    {
+      "plan": "papertrail:choklad"
     }
   ],
   "buildpacks": [
