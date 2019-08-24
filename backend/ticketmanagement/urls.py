@@ -10,6 +10,8 @@ from ticketmanagement.views import UserViewSet, TicketViewSet, CategoryViewSet, 
 
 router = routers.DefaultRouter()
 
+router.register(r'api/users', UserViewSet)
+
 router.register(r'api/tickets', TicketViewSet)
 
 router.register(r'api/category', CategoryViewSet)

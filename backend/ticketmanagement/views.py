@@ -10,7 +10,7 @@ from tickets.models import Ticket, Category, Comment
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [
-      permissions.AllowAny
+      permissions.IsAdminUser
     ]
     serializer_class = UserSerializer
 
