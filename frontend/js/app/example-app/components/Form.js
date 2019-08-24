@@ -21,6 +21,12 @@ export class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.createTicket(this.state);
+    this.setState({
+      title: '',
+      user: '',
+      content: '',
+      category: '',
+    });
   }
 
   render() {
