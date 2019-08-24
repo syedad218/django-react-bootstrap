@@ -38,20 +38,7 @@ export class Form extends Component {
             <label>Title</label>
             <input className="form-control" type="text" name="title" onChange={this.handleChange} />
           </div>
-          <div className="form-group">
-            <label>user</label>
-            <select
-              className="form-control"
-              name="user"
-              value={this.state.user}
-              onChange={this.handleChange}
-            >
-              <option selected value="">
-                ---
-              </option>
-              <option value="1">syed@cheenilabs.com</option>
-            </select>
-          </div>
+
           <div className="form-group">
             <label>Content</label>
             <textarea

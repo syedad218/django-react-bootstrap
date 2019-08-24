@@ -13,7 +13,7 @@ class Alerts extends React.Component {
     const { error, alert, message } = this.props;
     if (error !== prevProps.error) {
       _.forEach(error.msg, function(value, key) {
-        alert.error(`${key}: ${value.join()}`);
+        alert.error(`${_.isArray(value) ? value.join() : value}`);
       });
     }
     if (message !== prevProps.message) {

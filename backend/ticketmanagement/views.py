@@ -16,11 +16,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # ViewSets define the view behavior.
 class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
+    queryset = Category.objects.all()
     permission_classes = [
-      permissions.AllowAny
+      permissions.IsAuthenticated
     ]
     serializer_class = TicketSerializer
+    def get_queryset(self):
+      return self.request.user.tickets.all()
+    
+    def perform_create(self, serializer):
+      serializer.save(user=self.request.user) 
 
 
 # ViewSets define the view behavior.
@@ -38,13 +43,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = CommentSerializer
     
-    # def get_queryset(self):
-    #     """
-    #     Optionally restricts the returned purchases to a given user,
-    #     by filtering against a `username` query parameter in the URL.
-    #     """
-    #     queryset = Comment.objects.all()
-    #     ticket_id = self.request.query_params.get('ticket_id', None)
-    #     if ticket_id is not None:
-    #         queryset = queryset.filter(ticket__id=ticket_id)
-    #     return queryset
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Comment.objects.all()
+        ticket_id = self.request.query_params.get('ticket_id', None)
+        if ticket_id is not None:
+            queryset = queryset.filter(ticket__id=ticket_id)
+        return queryset

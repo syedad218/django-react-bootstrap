@@ -13,7 +13,7 @@ def generate_ticket_id():
 
 class Ticket(models.Model):
     title = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="tickets", on_delete=models.CASCADE)
     content = models.TextField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     ticket_id = models.CharField(max_length=255, blank=True)
@@ -41,7 +41,7 @@ class Category(models.Model):
         return self.name
 
 class Comment(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, related_name="comments", on_delete=models.CASCADE)
     comment = models.TextField()
 
     def __str__(self):
