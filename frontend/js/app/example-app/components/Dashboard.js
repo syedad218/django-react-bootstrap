@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Form from './Form';
-import Tickets from './Tickets'
+import Tickets from './Tickets';
 
 export default function Dashboard() {
   return (
@@ -8,5 +8,5 @@ export default function Dashboard() {
       <Form />
       <Tickets />
     </React.Fragment>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from users.models import User
-from tickets.models import Ticket, Category
+from tickets.models import Ticket, Category, Comment
 
 # Serializers define the API representation.
 class UserSerializer(serializers.Serializer):
@@ -28,10 +28,15 @@ class UserSerializer(serializers.Serializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ('id','title', 'ticket_id','user', 'content', 'category','created', 'modified')
+        fields = '__all__'
 
 # Serializers define the API representation.
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         fields = ('name', 'slug')
+        
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'

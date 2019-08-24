@@ -2,10 +2,10 @@ from django.conf.urls import include, url  # noqa
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.urls import path, include
-from tickets.models import Ticket, Category
+from tickets.models import Ticket, Category, Comment
 import django_js_reverse.views
 from rest_framework import routers
-from ticketmanagement.views import UserViewSet, TicketViewSet, CategoryViewSet
+from ticketmanagement.views import UserViewSet, TicketViewSet, CategoryViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
 router.register(r'api/users', UserViewSet)
@@ -13,6 +13,8 @@ router.register(r'api/users', UserViewSet)
 router.register(r'api/tickets', TicketViewSet)
 
 router.register(r'api/category', CategoryViewSet)
+
+router.register(r'api/comments', CommentViewSet)
 
 
 urlpatterns = [

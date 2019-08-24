@@ -38,4 +38,13 @@ class Category(models.Model):
     slug = models.SlugField()
     
     def __str__(self):
-       return self.name
+        return self.name
+
+class Comment(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    comment = models.TextField()
+
+    def __str__(self):
+        return "{} - {}".format(self.ticket, self.comment)
+      
+      
