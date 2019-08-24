@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET } from './types';
+import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET, GET_ERRORS } from './types';
 import Cookies from 'js-cookie';
 
 export const getTickets = () => (dispatch) => {
@@ -36,11 +36,19 @@ export const createTicket = (ticket) => (dispatch) => {
     headers: { 'X-CSRFToken': Cookies.get('csrftoken') },
   })
     .then((res) => {
-      // console.log(res);
       dispatch({
         type: CREATE_TICKET,
         payload: res.data,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const errors = {
+        msg: err.response.data,
+        status: err.response.status,
+      };
+      dispatch({
+        type: GET_ERRORS,
+        payload: errors,
+      });
+    });
 };
