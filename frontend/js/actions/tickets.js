@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createMessage } from './messages';
 import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET, GET_ERRORS } from './types';
 import Cookies from 'js-cookie';
 
@@ -19,7 +20,7 @@ export const deleteTicket = (id) => (dispatch) => {
   axios
     .delete(`/api/tickets/${id}/`, { headers: { 'X-CSRFToken': Cookies.get('csrftoken') } })
     .then((res) => {
-      // console.log(res);
+      dispatch(createMessage({ ticketDeleted: 'Ticket Deleted Successfully' }));
       dispatch({
         type: DELETE_TICKET,
         payload: id,
@@ -36,6 +37,7 @@ export const createTicket = (ticket) => (dispatch) => {
     headers: { 'X-CSRFToken': Cookies.get('csrftoken') },
   })
     .then((res) => {
+      dispatch(createMessage({ ticketCreated: 'Ticket Created Successfully' }));
       dispatch({
         type: CREATE_TICKET,
         payload: res.data,
