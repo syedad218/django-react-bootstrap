@@ -37,8 +37,10 @@ export default function(state = initialState, action) {
         tickets: [...state.tickets, action.payload],
       };
     case UPDATE_TICKET:
+      // console.log(tickets);
       return {
         ...state,
+        tickets: [...state.tickets.filter((item) => item.id !== action.payload.id), action.payload],
       };
     case ADD_COMMENT:
       return {

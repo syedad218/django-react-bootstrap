@@ -81,6 +81,7 @@ export const updateTicket = (ticket_pk, data) => (dispatch, getState) => {
     .put(`/api/tickets/${ticket_pk}/`, data, tokenConfig(getState))
     .then((res) => {
       dispatch(createMessage({ ticketUpdated: 'Ticket Updated Successfully' }));
+      // console.log(res);
       dispatch({
         type: UPDATE_TICKET,
         payload: res.data,

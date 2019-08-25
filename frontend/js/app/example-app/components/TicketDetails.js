@@ -6,6 +6,7 @@ import {
   getCategories,
   updateTicket,
   addComment,
+  getTickets,
 } from '../../../actions/tickets';
 import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
@@ -14,6 +15,7 @@ export class TicketDetails extends Component {
   static propTypes = {
     getTicketDetails: PropTypes.func.isRequired,
     updateTicket: PropTypes.func.isRequired,
+    getTickets: PropTypes.func,
     addComment: PropTypes.func,
     ticket: PropTypes.object,
     categories: PropTypes.array,
@@ -211,5 +213,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { getTicketDetails, getCategories, updateTicket, addComment }
+  { getTicketDetails, getCategories, updateTicket, addComment, getTickets }
 )(TicketDetails);
