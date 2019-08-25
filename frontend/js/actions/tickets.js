@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
-import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET } from './types';
+import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET, GET_CATEGORIES } from './types';
 // import Cookies from 'js-cookie';
 import { tokenConfig } from './auth';
 
@@ -11,6 +11,19 @@ export const getTickets = () => (dispatch, getState) => {
       // console.log(res);
       dispatch({
         type: GET_TICKETS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const getCategories = () => (dispatch, getState) => {
+  axios
+    .get('/api/category/', tokenConfig(getState))
+    .then((res) => {
+      // console.log(res);
+      dispatch({
+        type: GET_CATEGORIES,
         payload: res.data,
       });
     })

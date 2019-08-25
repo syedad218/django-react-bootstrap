@@ -16,7 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # ViewSets define the view behavior.
 class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Ticket.objects.all()
     permission_classes = [
       permissions.IsAuthenticated
     ]
@@ -25,7 +25,7 @@ class TicketViewSet(viewsets.ModelViewSet):
       return self.request.user.tickets.all()
     
     def perform_create(self, serializer):
-      serializer.save(user=self.request.user) 
+      serializer.save(user=self.request.user)
 
 
 # ViewSets define the view behavior.

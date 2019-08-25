@@ -1,7 +1,8 @@
-import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET } from '../actions/types';
+import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET, GET_CATEGORIES } from '../actions/types';
 
 const initialState = {
   tickets: [],
+  categories: [],
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         tickets: action.payload,
+      };
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.payload,
       };
     case DELETE_TICKET:
       return {

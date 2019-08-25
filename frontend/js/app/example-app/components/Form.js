@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createTicket } from '../../../actions/tickets';
+import { createTicket, getCategories } from '../../../actions/tickets';
 export class Form extends Component {
   static propTypes = {
     createTicket: PropTypes.func.isRequired,
+    categories: PropTypes.array.isRequired,
+    getCategories: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.state = { title: '', user: '', content: '', category: '' };
+    this.state = { title: '', content: '', category: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -23,10 +25,13 @@ export class Form extends Component {
     this.props.createTicket(this.state);
     this.setState({
       title: '',
-      user: '',
       content: '',
       category: '',
     });
+  }
+
+  componentDidMount() {
+    this.props.getCategories();
   }
 
   render() {
@@ -61,7 +66,9 @@ export class Form extends Component {
               <option selected value="">
                 ---
               </option>
-              <option value="1">http errors</option>
+              {this.props.categories.map((item, key) => {
+                return <option value={item.id}>{item.name}</option>;
+              })}
             </select>
           </div>
           <div className="form-group">
@@ -75,7 +82,11 @@ export class Form extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  categories: state.tickets.categories,
+});
+
 export default connect(
-  null,
-  { createTicket }
+  mapStateToProps,
+  { createTicket, getCategories }
 )(Form);

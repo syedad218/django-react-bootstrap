@@ -20,8 +20,8 @@ class Alerts extends React.Component {
     }
 
     if (message !== prevProps.message) {
-      if (message.deleteLead) alert.success(message.deleteLead);
-      if (message.addLead) alert.success(message.addLead);
+      if (message.ticketDeleted) alert.success(message.ticketDeleted);
+      if (message.ticketCreated) alert.success(message.ticketCreated);
       if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
     }
   }

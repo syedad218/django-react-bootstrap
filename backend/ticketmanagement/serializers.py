@@ -29,10 +29,10 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # Serializers define the API representation.
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        fields = '__all__'
         
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
