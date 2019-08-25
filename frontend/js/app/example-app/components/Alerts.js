@@ -17,12 +17,14 @@ class Alerts extends React.Component {
       if (error.msg.message) alert.error(`Message: ${error.msg.message.join()}`);
       if (error.msg.non_field_errors) alert.error(error.msg.non_field_errors.join());
       if (error.msg.username) alert.error(error.msg.username.join());
+      if (error.msg.category) alert.error(error.msg.category.join());
     }
 
     if (message !== prevProps.message) {
       if (message.ticketDeleted) alert.success(message.ticketDeleted);
       if (message.ticketCreated) alert.success(message.ticketCreated);
       if (message.ticketUpdated) alert.success(message.ticketUpdated);
+      if (message.commentAdded) alert.success(message.commentAdded);
       if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
     }
   }

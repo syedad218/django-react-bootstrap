@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getTicketDetails, getCategories, updateTicket } from '../../../actions/tickets';
+import {
+  getTicketDetails,
+  getCategories,
+  updateTicket,
+  addComment,
+} from '../../../actions/tickets';
 import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -9,6 +14,7 @@ export class TicketDetails extends Component {
   static propTypes = {
     getTicketDetails: PropTypes.func.isRequired,
     updateTicket: PropTypes.func.isRequired,
+    addComment: PropTypes.func,
     ticket: PropTypes.object,
     categories: PropTypes.array,
   };
@@ -19,12 +25,17 @@ export class TicketDetails extends Component {
       title: '',
       content: '',
       category: '',
+      status: '',
       redirect: false,
       disabled: true,
+      is_staff: false,
+      comment: '',
       button: 'btn btn-secondary',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeComment = this.handleChangeComment.bind(this);
+    this.handleSubmitComment = this.handleSubmitComment.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,6 +44,8 @@ export class TicketDetails extends Component {
         title: nextProps.ticket.ticket.title,
         content: nextProps.ticket.ticket.content,
         category: nextProps.ticket.ticket.category,
+        status: nextProps.ticket.ticket.status,
+        is_staff: nextProps.user.is_staff,
       });
       // console.log(nextProps.ticket.comments[0].comment);
     }
@@ -42,12 +55,21 @@ export class TicketDetails extends Component {
     this.setState({ [e.target.name]: e.target.value });
     this.setState({ disabled: false, button: 'btn btn-success' });
   }
+  handleChangeComment(e) {
+    this.setState({ comment: e.target.value });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { title, content, category } = this.state;
-    this.props.updateTicket(this.props.match.params.id, { title, content, category });
+    const { title, content, category, status } = this.state;
+    this.props.updateTicket(this.props.match.params.id, { title, content, category, status });
     this.setState({ redirect: true });
+  }
+  handleSubmitComment(e) {
+    e.preventDefault();
+    const { comment } = this.state;
+    let ticket = this.props.match.params.id;
+    this.props.addComment({ ticket: ticket, comment: comment });
   }
   componentDidMount() {
     this.props.getTicketDetails(this.props.match.params.id);
@@ -58,7 +80,7 @@ export class TicketDetails extends Component {
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
-    const { title, content, category, disabled, button } = this.state;
+    const { title, content, category, disabled, button, is_staff, status, comment } = this.state;
     const { ticket, categories } = this.props;
     return (
       <div className="container">
@@ -68,6 +90,7 @@ export class TicketDetails extends Component {
             <div className="form-group">
               <label>Title</label>
               <input
+                disabled={is_staff}
                 className="form-control"
                 type="text"
                 name="title"
@@ -79,6 +102,7 @@ export class TicketDetails extends Component {
             <div className="form-group">
               <label>Content</label>
               <textarea
+                disabled={is_staff}
                 id="content"
                 rows="3"
                 name="content"
@@ -91,6 +115,7 @@ export class TicketDetails extends Component {
               <label>category</label>
               <select
                 name="category"
+                disabled={!is_staff}
                 className="form-control"
                 onChange={this.handleChange}
                 value={category}
@@ -108,19 +133,64 @@ export class TicketDetails extends Component {
               </select>
             </div>
             <div className="form-group">
+              <label>status</label>
+              <select
+                name="status"
+                disabled={!is_staff}
+                className="form-control"
+                onChange={this.handleChange}
+                value={status}
+              >
+                <option selected value="">
+                  ---
+                </option>
+                {['PENDING', 'CLOSED'].map((item, key) => {
+                  return (
+                    <option key={key} value={item}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            <div className="form-group">
               <button disabled={disabled} type="submit" className={button}>
                 Update
               </button>
             </div>
           </form>
         </div>
-        <div class="card">
-          <h5 style={{ padding: '1rem' }}>Solution</h5>
-          <div class="card-body">
+        <div className="card">
+          <h5 style={{ padding: '0.5rem' }}>Comments</h5>
+          {is_staff ? (
+            <div className="card card-body mt-4 mb-4">
+              <form onSubmit={this.handleSubmitComment}>
+                <div className="form-group">
+                  <label>Add solutions/comments</label>
+                  <textarea
+                    id="content"
+                    rows="3"
+                    name="content"
+                    className="form-control"
+                    onChange={this.handleChangeComment}
+                    value={comment}
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Add
+                </button>
+              </form>
+            </div>
+          ) : (
+            ''
+          )}
+
+          <div className="card-body">
             {ticket
               ? ticket.comments.map((comment) => {
                   return (
-                    <div class="alert alert-info" role="alert">
+                    <div className="alert alert-info" role="alert">
                       {comment.comment}
                     </div>
                   );
@@ -136,9 +206,10 @@ export class TicketDetails extends Component {
 const mapStateToProps = (state) => ({
   ticket: state.tickets.activeTicket,
   categories: state.tickets.categories,
+  user: state.auth.user,
 });
 
 export default connect(
   mapStateToProps,
-  { getTicketDetails, getCategories, updateTicket }
+  { getTicketDetails, getCategories, updateTicket, addComment }
 )(TicketDetails);

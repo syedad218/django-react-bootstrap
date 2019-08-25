@@ -7,6 +7,7 @@ import {
   UPDATE_TICKET,
   GET_CATEGORIES,
   GET_TICKET_DETAILS,
+  ADD_COMMENT,
 } from './types';
 // import Cookies from 'js-cookie';
 import { tokenConfig } from './auth';
@@ -82,6 +83,20 @@ export const updateTicket = (ticket_pk, data) => (dispatch, getState) => {
       dispatch(createMessage({ ticketUpdated: 'Ticket Updated Successfully' }));
       dispatch({
         type: UPDATE_TICKET,
+        payload: res.data,
+      });
+    })
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const addComment = ({ ticket, comment }) => (dispatch, getState) => {
+  const body = JSON.stringify({ ticket, comment });
+  axios
+    .post('/api/comments/', body, tokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ commentAdded: 'Comment Added Successfully' }));
+      dispatch({
+        type: ADD_COMMENT,
         payload: res.data,
       });
     })

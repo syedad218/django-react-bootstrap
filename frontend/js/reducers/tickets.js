@@ -5,6 +5,7 @@ import {
   UPDATE_TICKET,
   GET_CATEGORIES,
   GET_TICKET_DETAILS,
+  ADD_COMMENT,
 } from '../actions/types';
 import _ from 'lodash';
 const initialState = {
@@ -38,6 +39,14 @@ export default function(state = initialState, action) {
     case UPDATE_TICKET:
       return {
         ...state,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        activeTicket: {
+          ...state.activeTicket,
+          comments: [...state.activeTicket.comments, action.payload],
+        },
       };
     case GET_TICKET_DETAILS:
       return {

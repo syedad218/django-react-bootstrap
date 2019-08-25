@@ -1,4 +1,5 @@
 export const GET_TICKETS = 'GET_TICKETS';
+export const ADD_COMMENT = 'ADD_COMMENT';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const DELETE_TICKET = 'DELETE_TICKET';
 export const CREATE_TICKET = 'CREATE_TICKET';

@@ -17,7 +17,7 @@ class Ticket(models.Model):
     content = models.TextField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     ticket_id = models.CharField(max_length=255, blank=True)
-    status = models.CharField(choices=status, max_length=155, default="pending")
+    status = models.CharField(choices=status, max_length=155, default="PENDING")
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
