@@ -1,8 +1,13 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets, permissions
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from ticketmanagement.serializers import UserSerializer, TicketSerializer, CategorySerializer, CommentSerializer
 from users.models import User
 from tickets.models import Ticket, Category, Comment
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -26,6 +31,18 @@ class TicketViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
       serializer.save(user=self.request.user)
+      
+    def retrieve(self, request, pk=None):
+      queryset = Ticket.objects.all()
+      ticket = get_object_or_404(queryset, pk=pk)
+      comments = ticket.comments.all()
+      logger.info(comments)
+      if(comments.exists()):
+        comments = CommentSerializer(comments, many=True).data
+      else:
+        comments: []
+      serializer = TicketSerializer(ticket)
+      return Response({"ticket":serializer.data, "comments": comments})
 
 
 # ViewSets define the view behavior.
@@ -42,14 +59,3 @@ class CommentViewSet(viewsets.ModelViewSet):
       permissions.AllowAny
     ]
     serializer_class = CommentSerializer
-    
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
-        queryset = Comment.objects.all()
-        ticket_id = self.request.query_params.get('ticket_id', None)
-        if ticket_id is not None:
-            queryset = queryset.filter(ticket__id=ticket_id)
-        return queryset

@@ -3,6 +3,7 @@ import Header from '../app/example-app/components/headers';
 import Dashboard from '../app/example-app/components/Dashboard';
 import Alerts from '../app/example-app/components/Alerts';
 import Login from '../app/example-app/components/Login';
+import TicketDetails from '../app/example-app/components/TicketDetails';
 import Register from '../app/example-app/components/Register';
 import PrivateRoute from '../common/PrivateRoute';
 import { loadUser } from '../actions/auth';
@@ -31,6 +32,7 @@ class Home extends Component {
                 <PrivateRoute exact path="/" component={Dashboard} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
+                <Route exact path="/ticket/:id" component={TicketDetails} />
               </Switch>
             </div>
           </Fragment>

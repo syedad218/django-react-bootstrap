@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
-import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET, GET_CATEGORIES } from './types';
+import {
+  GET_TICKETS,
+  DELETE_TICKET,
+  CREATE_TICKET,
+  UPDATE_TICKET,
+  GET_CATEGORIES,
+  GET_TICKET_DETAILS,
+} from './types';
 // import Cookies from 'js-cookie';
 import { tokenConfig } from './auth';
 
@@ -11,6 +18,18 @@ export const getTickets = () => (dispatch, getState) => {
       // console.log(res);
       dispatch({
         type: GET_TICKETS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const getTicketDetails = (id) => (dispatch, getState) => {
+  axios
+    .get(`/api/tickets/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_TICKET_DETAILS,
         payload: res.data,
       });
     })
@@ -50,6 +69,19 @@ export const createTicket = (ticket) => (dispatch, getState) => {
       dispatch(createMessage({ ticketCreated: 'Ticket Created Successfully' }));
       dispatch({
         type: CREATE_TICKET,
+        payload: res.data,
+      });
+    })
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const updateTicket = (ticket_pk, data) => (dispatch, getState) => {
+  axios
+    .put(`/api/tickets/${ticket_pk}/`, data, tokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ ticketUpdated: 'Ticket Updated Successfully' }));
+      dispatch({
+        type: UPDATE_TICKET,
         payload: res.data,
       });
     })

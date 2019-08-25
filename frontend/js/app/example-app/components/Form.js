@@ -23,11 +23,12 @@ export class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.createTicket(this.state);
-    this.setState({
-      title: '',
-      content: '',
-      category: '',
-    });
+    // this.setState({
+    //   title: '',
+    //   content: '',
+    //   category: '',
+    // });
+    // e.stopPropogation();
   }
 
   componentDidMount() {
@@ -67,7 +68,11 @@ export class Form extends Component {
                 ---
               </option>
               {this.props.categories.map((item, key) => {
-                return <option value={item.id}>{item.name}</option>;
+                return (
+                  <option key={key} value={item.id}>
+                    {item.name}
+                  </option>
+                );
               })}
             </select>
           </div>
