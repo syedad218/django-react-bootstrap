@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 import { GET_TICKETS, DELETE_TICKET, CREATE_TICKET } from './types';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
+import { tokenConfig } from './auth';
 
-export const getTickets = () => (dispatch) => {
+export const getTickets = () => (dispatch, getState) => {
   axios
-    .get('/api/tickets/')
+    .get('/api/tickets/', tokenConfig(getState))
     .then((res) => {
       // console.log(res);
       dispatch({
@@ -16,9 +17,9 @@ export const getTickets = () => (dispatch) => {
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const deleteTicket = (id) => (dispatch) => {
+export const deleteTicket = (id) => (dispatch, getState) => {
   axios
-    .delete(`/api/tickets/${id}/`, { headers: { 'X-CSRFToken': Cookies.get('csrftoken') } })
+    .delete(`/api/tickets/${id}/`, tokenConfig(getState))
     .then((res) => {
       dispatch(createMessage({ ticketDeleted: 'Ticket Deleted Successfully' }));
       dispatch({
@@ -29,13 +30,9 @@ export const deleteTicket = (id) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-export const createTicket = (ticket) => (dispatch) => {
-  axios({
-    method: 'post',
-    url: '/api/tickets/',
-    data: ticket,
-    headers: { 'X-CSRFToken': Cookies.get('csrftoken') },
-  })
+export const createTicket = (ticket) => (dispatch, getState) => {
+  axios
+    .post('/api/tickets/', ticket, tokenConfig(getState))
     .then((res) => {
       dispatch(createMessage({ ticketCreated: 'Ticket Created Successfully' }));
       dispatch({
