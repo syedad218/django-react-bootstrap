@@ -27,7 +27,11 @@ class TicketViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = TicketSerializer
     def get_queryset(self):
-      return self.request.user.tickets.all()
+      queryset = Ticket.objects.all()
+      if (self.request.user.is_staff):
+        return queryset
+      else:
+        return self.request.user.tickets.all()
     
     def perform_create(self, serializer):
       serializer.save(user=self.request.user)
